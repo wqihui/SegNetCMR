@@ -1,13 +1,19 @@
 # SegNetCMR
 A [Tensorflow](https://www.tensorflow.org/) implementation of [SegNet](https://mi.eng.cam.ac.uk/projects/segnet/) to segments CMR images
 
+## NEW RELEASE
+1. Switched to using the [SELU](https://arxiv.org/abs/1706.02515) activation function - no more batch norm and is_training hassle - a self-normalising neural network!!!!
+2. To support the above - input images are rescaled from -1 to 1: (2/255.0) * image - 1.
+3. Now updates the results more often and saves the checkpoint less often - this is faster. Also, doesn't flush the results after every write.
+
 ## Aims
 1. A demonstration of a more complete Tensorflow program including saving state and resuming.
 2. Provide an ready-to-go example of medical segmentation with sufficient training and validation data, in a usable format (PNGs).
 
 ## Requirements
-1. Python 3.5: Best to use the [Conda](https://www.continuum.io/downloads) distribution
-2. Tensorflow 0.12
+You must have a GPU and install the tensorflow-gpu version as the cpu version does not have tf.nn.max_pool_with_argmax()
+1. Python >=3.6: Best to use the [Conda](https://www.continuum.io/downloads) distribution
+2. tensorflow-gpu >=0.11
 
 ## Todo
 1. Add code to run on your own data (currently there is only the training code present)
@@ -16,13 +22,13 @@ A [Tensorflow](https://www.tensorflow.org/) implementation of [SegNet](https://m
 Make sure you have conda and tensorflow installed
 
 ```commandline
-conda install tensorflow
+conda install tensorflow-gpu
 python
-Python 3.5.2 | packaged by conda-forge | (default, Sep  8 2016, 14:36:38)
+Python 3.6.1 | packaged by conda-forge | (default, Sep  8 2016, 14:36:38)
 ```
 The git clone this repository
 ```commandline
-git clone https://
+git clone https://github.com/mshunshin/SegNetCMR.git
 ```
 
 And start the training from the folder
@@ -58,9 +64,11 @@ The first two sets of CMRs are included as training data, the last set as test d
 ## Issues and annoyances
 1. The original SegNet uses max_pool_with_argmax, and requires an unpool_with_argmax. Unfortunately, Tensorflow does not provide an unpool_with_argmax. Fortunately there is code in the github thread above to make your own.
 2. This version of unpool_with_argmax runs on the CPU not GPU so is a little slower.
-3. Tensorflow does not provide a CPU version of max_pool_with_argmax, so if you don't have a GPU you are stuck using the maxpool version.
+3. Tensorflow does not provide a CPU version of max_pool_with_argmax, so if you don't have a GPU you can't run this.
 4. Tensorflow forgot to include a function for gradients for maxpoolwithargmax, so it is included at the bottom of train.py
-5. The name mangling of the Sunnybrook CMR data.
+5. The name mangling of the Sunnybrook CMR data - I have fixed this and the data is included in the download.
+6. SegNet works better with a version of softmax that is inversely weighted by class frequency.
+7. Now using SELU as the activation funciton - this allows us to get rid of the Batch Norm (and the associated is_training hassle).
 
 ## License
 SegNetCMR: MIT license

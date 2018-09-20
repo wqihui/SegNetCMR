@@ -1,4 +1,3 @@
-from . import layers
 from .inference import inference
 from .training import training
 from .inputs import placeholder_inputs
