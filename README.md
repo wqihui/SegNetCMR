@@ -1,4 +1,4 @@
-# SegNetCMR
+# SegNetCMR 1234
 A [Tensorflow](https://www.tensorflow.org/) implementation of [SegNet](https://mi.eng.cam.ac.uk/projects/segnet/) to segments CMR images
 
 ## NEW RELEASE
